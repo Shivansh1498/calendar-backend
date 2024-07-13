@@ -10,38 +10,50 @@ app.get("/", (_, res) => {
   res.send("Custom calendar API");
 });
 
-app.get("/calendar/1", (_, res) => {
-  res.json([
-    {
-      id: 1,
-      title: "Coffee with John",
-      start: "2024-07-14",
-      end: "2024-07-14",
-    },
-    {
-      id: 2,
-      title: "Ski trip",
-      start: "2024-07-15",
-      end: "2024-07-15",
-    },
-  ]);
-});
+// Dynamic route to handle calendar requests
+app.get("/calendar/:id", (req, res) => {
+  const calendarId = req.params.id;
 
-app.get("/calendar/2", (_, res) => {
-  res.json([
-    {
-      id: 3,
-      title: "Coffee with John",
-      start: "2024-08-04",
-      end: "2024-08-04",
-    },
-    {
-      id: 4,
-      title: "Ski trip",
-      start: "2024-08-04",
-      end: "2024-08-06",
-    },
-  ]);
+  let response;
+
+  switch (calendarId) {
+    case "1":
+      response = [
+        {
+          id: 1,
+          title: "Coffee with John",
+          start: "2024-07-14",
+          end: "2024-07-14",
+        },
+        {
+          id: 2,
+          title: "Ski trip",
+          start: "2024-07-15",
+          end: "2024-07-15",
+        },
+      ];
+      break;
+    case "2":
+      response = [
+        {
+          id: 3,
+          title: "Coffee with John",
+          start: "2024-08-04",
+          end: "2024-08-04",
+        },
+        {
+          id: 4,
+          title: "Ski trip",
+          start: "2024-08-04",
+          end: "2024-08-06",
+        },
+      ];
+      break;
+    default:
+      response = { error: "Calendar not found" };
+  }
+
+  res.json(response);
 });
 
 app.listen(port, () => {
